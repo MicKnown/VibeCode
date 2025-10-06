@@ -329,11 +329,13 @@ export function LoginModal({
 									<form onSubmit={handleSubmit} className="space-y-4">
 										{mode === 'register' && (
 											<div>
-												<input
-													type="text"
-													placeholder="Full name"
-													value={name}
-													onChange={(e) => setName(e.target.value)}
+											<input
+												id="name"
+												name="name"
+												type="text"
+												placeholder="Full name"
+												value={name}
+												onChange={(e) => setName(e.target.value)}
 													className={clsx(
 														'w-full p-3 rounded-lg border bg-background transition-colors',
 														validationErrors.name ? 'border-destructive' : 'border-border focus:border-primary'
@@ -347,11 +349,14 @@ export function LoginModal({
 										)}
 
 										<div>
-											<input
-												type="email"
-												placeholder="Email address"
-												value={email}
-												onChange={(e) => setEmail(e.target.value)}
+										<input
+											id="email"
+											name="email"
+											type="email"
+											autoComplete="email"
+											placeholder="Email address"
+											value={email}
+											onChange={(e) => setEmail(e.target.value)}
 												className={clsx(
 													'w-full p-3 rounded-lg border bg-background transition-colors',
 													validationErrors.email ? 'border-destructive' : 'border-border focus:border-primary'
@@ -365,7 +370,10 @@ export function LoginModal({
 
 										<div className="relative">
 											<input
+												id="password"
+												name="password"
 												type={showPassword ? 'text' : 'password'}
+												autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
 												placeholder="Password"
 												value={password}
 												onChange={(e) => setPassword(e.target.value)}
@@ -391,7 +399,10 @@ export function LoginModal({
 										{mode === 'register' && (
 											<div>
 												<input
+													id="confirmPassword"
+													name="confirmPassword"
 													type="password"
+													autoComplete="new-password"
 													placeholder="Confirm password"
 													value={confirmPassword}
 													onChange={(e) => setConfirmPassword(e.target.value)}

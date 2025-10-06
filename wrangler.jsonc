@@ -1,156 +1,59 @@
-/**
- * For more details on how to configure Wrangler, refer to:
- * https://developers.cloudflare.com/workers/wrangler/configuration/
- */
- {
-	// "$schema": "node_modules/wrangler/config-schema.json",
-	"name": "vibesdk-production",
+{
+	"name": "vibesdk-entryai",
 	"main": "worker/index.ts",
-	"compatibility_date": "2025-08-10",
-	"compatibility_flags": ["nodejs_compat"],
-    "version_metadata": {
-        "binding": "CF_VERSION_METADATA"
-    },
-	"assets": {
-		"directory": "dist",
-		"not_found_handling": "single-page-application",
-		// "run_worker_first": ["!/src/*", "!/api/docs/*"],
-        "run_worker_first": true,
-        "binding": "ASSETS"
-	},
-	"observability": {
-		"enabled": true,
-        "head_sampling_rate": 1
-	},
-  "unsafe": {
-    "bindings": [
-        {
-            "name": "API_RATE_LIMITER",
-            "type": "ratelimit",
-            "namespace_id": "2101",
-            "simple": { "limit": 10000, "period": 60 }
-        },
-        {
-            "name": "AUTH_RATE_LIMITER",
-            "type": "ratelimit",
-            "namespace_id": "2102",
-            "simple": { "limit": 1000, "period": 60 }
-        }
-    ]
-  },
-	/**
-	 * Bindings
-	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-	 * databases, object storage, AI inference, real-time communication and more.
-	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-	 */
-	"ai": {
-		"binding": "AI",
-        "remote": true
-	},
-	"images": {
-		"binding": "IMAGES"
-	},
-    "dispatch_namespaces": [
-        {
-            "binding": "DISPATCHER",
-            "namespace": "vibesdk-default-namespace",
-            "remote": true
-        }
-    ],
-	"containers": [
-		{
-			"class_name": "UserAppSandboxService",
-			"image": "./SandboxDockerfile",
-            // Altering max_instances value will have no effect. Please use the MAX_SANDBOX_INSTANCES var instead.
-			"max_instances": 2900,
-            // ATTENTION: Altering instance_type value will have no effect. Please use the SANDBOX_INSTANCE_TYPE var instead.
-            "instance_type": {
-                "vcpu": 4,
-                "memory_mib": 4096,
-                "disk_mb": 6144
-            },
-            "rollout_step_percentage": 100
-		}
+	"compatibility_date": "2024-09-23",
+	"compatibility_flags": [
+		"nodejs_compat_v2"
 	],
+	"assets": {
+		"directory": "dist/client",
+		"not_found_handling": "single-page-application",
+		"run_worker_first": true,
+		"binding": "ASSETS"
+	},
+	"ai": {
+		"binding": "AI"
+	},
+	// "durable_objects": {
+	//	"bindings": [
+	//		{
+	//			"class_name": "CodeGeneratorAgent",
+	//			"name": "CodeGenObject"
+	//		}
+	//	]
+	// },
+	// "migrations": [
+	//	{
+	//		"tag": "v1",
+	//		"new_sqlite_classes": [
+	//			"CodeGeneratorAgent"
+	//		]
+	//	}
+	// ],
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "vibesdk-db",
-			"database_id": "c4721a2b-b96a-428a-8b2a-b3d255b307e9",
-			"migrations_dir": "migrations",
+			"database_name": "vibesdk-entryai-db",
+			"database_id": "3441bede-30f9-44fa-be68-4d8ef764c0c0",
 			"remote": true
 		}
 	],
-	"durable_objects": {
-		"bindings": [
-			{
-				"class_name": "CodeGeneratorAgent",
-				"name": "CodeGenObject"
-			},
-            {
-                "class_name": "UserAppSandboxService",
-                "name": "Sandbox"
-            },
-            {
-                "class_name": "DORateLimitStore",
-                "name": "DORateLimitStore"
-            }
-		]
-	},
-    "r2_buckets": [
-      {
-        "binding": "TEMPLATES_BUCKET",
-        "bucket_name": "vibesdk-templates",
-        "remote": true
-      }
-    ],
-    "kv_namespaces": [
-        {
-            "binding": "VibecoderStore",
-            "id": "f066f3c2e4824981b48e8586c04db9c1",
-            "remote": true
-        }
-    ],
-    // "placement": {
-    //   "mode": "smart"
-    // },
-	"migrations": [
+	"kv_namespaces": [
 		{
-			"new_sqlite_classes": [
-				"CodeGeneratorAgent",
-				"UserAppSandboxService"
-			],
-			"tag": "v1"
-		},
-        {
-            "new_sqlite_classes": [
-                "DORateLimitStore"
-            ],
-            "tag": "v2"
-        }
+			"binding": "VibecoderStore",
+			"id": "4ee8fce67d80480a9a581f902dc7777c",
+			"remote": true
+		}
 	],
-	"routes": [
-        {
-            "pattern": "build.cloudflare.dev",
-            "custom_domain": true
-        },
-        {
-            "pattern": "*build-preview.cloudflare.dev/*",
-            "custom_domain": false,
-            "zone_id": "db01fac4261b2604aacad8410443a3e2"
-        }
-    ],
 	"vars": {
-        "TEMPLATES_REPOSITORY": "https://github.com/cloudflare/vibesdk-templates",
-        "ALLOWED_EMAIL": "",
-        "DISPATCH_NAMESPACE": "vibesdk-default-namespace",
-        "ENABLE_READ_REPLICAS": "true",
-        "CLOUDFLARE_AI_GATEWAY": "vibesdk-gateway",
-        "CUSTOM_DOMAIN": "",
-        "MAX_SANDBOX_INSTANCES": "10",
-        "SANDBOX_INSTANCE_TYPE": "standard-3"
-    },
-	"workers_dev": false,
-	"preview_urls": false
+		"ENVIRONMENT": "production",
+		"CUSTOM_DOMAIN": "vibesdk-entryai.workers.dev"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "VibecoderStore",
+			"id": "4ee8fce67d80480a9a581f902dc7777c",
+			"remote": true
+		}
+	]
 }

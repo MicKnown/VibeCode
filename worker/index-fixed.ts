@@ -20,17 +20,17 @@ const worker = {
           headers: response.headers,
         });
         
-        // Add CSP header that allows Monaco Editor and external resources to work
+        // Add CSP header that allows Monaco Editor to work
         newResponse.headers.set(
           'Content-Security-Policy',
           "default-src 'self'; " +
           "script-src 'self' 'unsafe-eval' 'unsafe-inline' data: blob:; " +
-          "style-src 'self' 'unsafe-inline' data: https://fonts.googleapis.com; " +
+          "style-src 'self' 'unsafe-inline' data:; " +
           "worker-src 'self' blob:; " +
           "child-src 'self' blob:; " +
-          "font-src 'self' data: https://fonts.gstatic.com https://r2cdn.perplexity.ai; " +
+          "font-src 'self' data:; " +
           "img-src 'self' data: blob:; " +
-          "connect-src 'self' ws: wss: https:"
+          "connect-src 'self' ws: wss: https:;"
         );
         
         return newResponse;

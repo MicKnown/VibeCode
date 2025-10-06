@@ -1,0 +1,29 @@
+# Full VibeSDK Configuration
+ENVIRONMENT="production"
+
+# Admin Configuration - Replace with your email
+ALLOWED_EMAIL="michael.known@gmail.com"
+CUSTOM_DOMAIN="vibesdk-entryai.workers.dev"
+
+# Authentication Secrets (generated)
+JWT_SECRET="vibesdk-jwt-secret-2024-random-key-12345"
+WEBHOOK_SECRET="vibesdk-webhook-secret-2024-random-key-67890"
+
+# AI API Keys - ADD YOUR KEYS HERE
+OPENAI_API_KEY=""
+ANTHROPIC_API_KEY=""
+GOOGLE_AI_STUDIO_API_KEY=""
+
+# Optional: Enhanced AI features
+OPENROUTER_API_KEY=""
+GROQ_API_KEY=""
+
+# Optional: OAuth (for GitHub/Google login)
+GITHUB_CLIENT_ID=""
+GITHUB_CLIENT_SECRET=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+
+# Cloudflare API (for advanced features)
+CLOUDFLARE_API_TOKEN=""
+CLOUDFLARE_ACCOUNT_ID=""
